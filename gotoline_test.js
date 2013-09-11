@@ -40,7 +40,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
         "plugins/c9.ide.editors/editor",
         "plugins/c9.ide.editors/tabs",
         "plugins/c9.ide.editors/pane",
-        "plugins/c9.ide.editors/page",
+        "plugins/c9.ide.editors/tab",
         "plugins/c9.ide.ace/ace",
         {
             packagePath  : "plugins/c9.ide.ace.gotoline/gotoline",
@@ -81,20 +81,20 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
         var tabs    = imports.tabs;
         var ace     = imports.ace;
         
-        function getPageHtml(page){
-            return page.pane.aml.getPage("editor::" + page.editorType).$ext
+        function getPageHtml(tab){
+            return tab.pane.aml.getPage("editor::" + tab.editorType).$ext
         }
         
-        expect.html.setConstructor(function(page){
-            if (typeof page == "object")
-                return page.$ext;
+        expect.html.setConstructor(function(tab){
+            if (typeof tab == "object")
+                return tab.$ext;
         });
         
         describe('gotoline', function() {
             before(function(done){
                 apf.config.setProperty("allow-select", false);
                 apf.config.setProperty("allow-blur", false);
-                tabs.getTabs()[0].focus();
+                tabs.getPanes()[0].focus();
                 
                 bar.$ext.style.background = "rgba(220, 220, 220, 0.93)";
                 bar.$ext.style.position = "fixed";
@@ -113,14 +113,14 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
                 this.timeout(10000);
                 
                 it('should open a pane with just an editor', function(done) {
-                    tabs.openFile("/file.js", function(err, page){
+                    tabs.openFile("/file.js", function(err, tab){
                         expect(tabs.getPages()).length(1);
                         
-//                        var sb  = page.document.getSession().statusBar;
+//                        var sb  = tab.document.getSession().statusBar;
 //                        var bar = sb.getElement("bar");
 //                        expect.html(bar, "rowcol").text("1:1");
 //                        
-//                        page.document.editor.ace.selectAll();
+//                        tab.document.editor.ace.selectAll();
 //                        setTimeout(function(){
 //                            expect.html(bar, "rowcol sel").text("2:1");
 //                            expect.html(bar, "sel").text("23 Bytes");
@@ -131,13 +131,13 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
                     });
                 });
                 it('should handle multiple documents in the same pane', function(done) {
-                    tabs.openFile("/listing.json", function(err, page){
+                    tabs.openFile("/listing.json", function(err, tab){
                         expect(tabs.getPages()).length(2);
                         
-                        page.activate();
+                        tab.activate();
                         
 //                        setTimeout(function(){
-//                            var sb = page.document.getSession().statusBar;
+//                            var sb = tab.document.getSession().statusBar;
 //                            expect.html(sb.getElement("bar"), "caption").text("1:1");
                             
                             done();
@@ -159,12 +159,12 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
 //                    }, 100);
                 });
 //                it('should remove the left pane from a horizontal split', function(done) {
-//                    var pane  = tabs.getTabs()[0];
-//                    var page = tabs.getTabs()[1].getPage();
+//                    var pane  = tabs.getPanes()[0];
+//                    var tab = tabs.getPanes()[1].getPage();
 //                    pane.unload();
-//                    expect(tabs.getTabs()).length(1);
+//                    expect(tabs.getPanes()).length(1);
 //                    expect(tabs.getPages()).length(2);
-//                    tabs.focusPage(page);
+//                    tabs.focusPage(tab);
 //                    done();
 //                });
             });

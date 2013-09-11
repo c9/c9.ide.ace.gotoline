@@ -68,8 +68,8 @@ define(function(require, exports, module) {
                 isAvailable : function(editor){ return win && win.visible; },
                 exec        : function() {
                     hide();
-                    var page = tabs.focussedPage;
-                    page && tabs.focusPage(page);
+                    var tab = tabs.focussedPage;
+                    tab && tabs.focusPage(tab);
                     
                     if (originalLine) {
                         execGotoLine(originalLine, originalColumn, true);
@@ -138,14 +138,14 @@ define(function(require, exports, module) {
                 var path = list.selected.getAttribute("path");
                 var line = list.selected.getAttribute("nr")
                 input.setValue(line);
-                tabs.open({path: path}, function(err, page){
+                tabs.open({path: path}, function(err, tab){
                     if (!err) {
                         nohide = true;
-                        // Focus the page
-                        tabs.focusPage(page);
+                        // Focus the tab
+                        tabs.focusPage(tab);
                         
                         // Append window
-                        attachToAce(page.editor.ace);
+                        attachToAce(tab.editor.ace);
                         
                         // Focus the list
                         list.focus();
@@ -226,8 +226,8 @@ define(function(require, exports, module) {
         /***** Methods *****/
         
          function show(noanim) {
-            var page    = tabs.focussedPage;
-            var editor  = page && page.editor;
+            var tab    = tabs.focussedPage;
+            var editor  = tab && tab.editor;
             if (!editor || editor.type != "ace") return;
             
             var ace     = editor.ace;
@@ -236,7 +236,7 @@ define(function(require, exports, module) {
     
             originalLine   = cursor.row + 1;
             originalColumn = cursor.column;
-            originalPath   = page.path;
+            originalPath   = tab.path;
     
             //Set the current line
             input.setValue(input.getValue() || cursor.row + 1);
@@ -295,8 +295,8 @@ define(function(require, exports, module) {
             if (control && control.stop)
                 control.stop();
     
-            var page   = tabs.focussedPage;
-            var editor = page && page.editor;
+            var tab   = tabs.focussedPage;
+            var editor = tab && tab.editor;
             if (!editor || editor.type != "ace")
                 return;
     
@@ -309,8 +309,8 @@ define(function(require, exports, module) {
         }
     
         function execGotoLine(line, column, preview) {
-            var page    = tabs.focussedPage && tabs.focussedPage;
-            var editor  = page && page.editor;
+            var tab    = tabs.focussedPage && tabs.focussedPage;
+            var editor  = tab && tab.editor;
             if (!editor || editor.type != "ace") return;
             
             var ace     = editor.ace;
@@ -395,7 +395,7 @@ define(function(require, exports, module) {
                     }
                 }
 
-                tabs.focusPage(page);
+                tabs.focusPage(tab);
             }
         }
         
