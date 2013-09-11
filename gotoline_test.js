@@ -39,7 +39,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
         },
         "plugins/c9.ide.editors/editor",
         "plugins/c9.ide.editors/tabs",
-        "plugins/c9.ide.editors/tab",
+        "plugins/c9.ide.editors/pane",
         "plugins/c9.ide.editors/page",
         "plugins/c9.ide.ace/ace",
         {
@@ -82,7 +82,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
         var ace     = imports.ace;
         
         function getPageHtml(page){
-            return page.tab.aml.getPage("editor::" + page.editorType).$ext
+            return page.pane.aml.getPage("editor::" + page.editorType).$ext
         }
         
         expect.html.setConstructor(function(page){
@@ -112,7 +112,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
             describe("open", function(){
                 this.timeout(10000);
                 
-                it('should open a tab with just an editor', function(done) {
+                it('should open a pane with just an editor', function(done) {
                     tabs.openFile("/file.js", function(err, page){
                         expect(tabs.getPages()).length(1);
                         
@@ -130,7 +130,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
                         done();
                     });
                 });
-                it('should handle multiple documents in the same tab', function(done) {
+                it('should handle multiple documents in the same pane', function(done) {
                     tabs.openFile("/listing.json", function(err, page){
                         expect(tabs.getPages()).length(2);
                         
@@ -145,23 +145,23 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
                     });
                 });
             });
-            describe("split(), tab.unload()", function(){
-                it('should split a tab horizontally, making the existing tab the left one', function(done) {
-                    var tab = tabs.focussedPage.tab;
-                    var righttab = tab.hsplit(true);
+            describe("split(), pane.unload()", function(){
+                it('should split a pane horizontally, making the existing pane the left one', function(done) {
+                    var pane = tabs.focussedPage.pane;
+                    var righttab = pane.hsplit(true);
                     tabs.focussedPage.attachTo(righttab);
                     done();
 //                    setTimeout(function(){
-//                        expect.html(tab.aml, "tab").text("2:1");
+//                        expect.html(pane.aml, "pane").text("2:1");
 //                        expect.html(righttab.aml, "righttab").text("1:1");
                     
                         //done();
 //                    }, 100);
                 });
-//                it('should remove the left tab from a horizontal split', function(done) {
-//                    var tab  = tabs.getTabs()[0];
+//                it('should remove the left pane from a horizontal split', function(done) {
+//                    var pane  = tabs.getTabs()[0];
 //                    var page = tabs.getTabs()[1].getPage();
-//                    tab.unload();
+//                    pane.unload();
 //                    expect(tabs.getTabs()).length(1);
 //                    expect(tabs.getPages()).length(2);
 //                    tabs.focusPage(page);
