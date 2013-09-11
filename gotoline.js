@@ -68,8 +68,8 @@ define(function(require, exports, module) {
                 isAvailable : function(editor){ return win && win.visible; },
                 exec        : function() {
                     hide();
-                    var tab = tabs.focussedPage;
-                    tab && tabs.focusPage(tab);
+                    var tab = tabs.focussedTab;
+                    tab && tabs.focusTab(tab);
                     
                     if (originalLine) {
                         execGotoLine(originalLine, originalColumn, true);
@@ -142,7 +142,7 @@ define(function(require, exports, module) {
                     if (!err) {
                         nohide = true;
                         // Focus the tab
-                        tabs.focusPage(tab);
+                        tabs.focusTab(tab);
                         
                         // Append window
                         attachToAce(tab.editor.ace);
@@ -226,7 +226,7 @@ define(function(require, exports, module) {
         /***** Methods *****/
         
          function show(noanim) {
-            var tab    = tabs.focussedPage;
+            var tab    = tabs.focussedTab;
             var editor  = tab && tab.editor;
             if (!editor || editor.type != "ace") return;
             
@@ -295,7 +295,7 @@ define(function(require, exports, module) {
             if (control && control.stop)
                 control.stop();
     
-            var tab   = tabs.focussedPage;
+            var tab   = tabs.focussedTab;
             var editor = tab && tab.editor;
             if (!editor || editor.type != "ace")
                 return;
@@ -309,7 +309,7 @@ define(function(require, exports, module) {
         }
     
         function execGotoLine(line, column, preview) {
-            var tab    = tabs.focussedPage && tabs.focussedPage;
+            var tab    = tabs.focussedTab && tabs.focussedTab;
             var editor  = tab && tab.editor;
             if (!editor || editor.type != "ace") return;
             
@@ -375,15 +375,15 @@ define(function(require, exports, module) {
                 //win.hide();
                 hide();
     
-                if (tabs.focussedPage.path) {
+                if (tabs.focussedTab.path) {
                     var lineNode = model.queryNode("line[@nr='" + line 
                         + "' and @path=" 
-                        + util.escapeXpathString(tabs.focussedPage.path) + "]");
+                        + util.escapeXpathString(tabs.focussedTab.path) + "]");
                     
                     if (!lineNode) {
                         lineNode = ui.n("<line />")
                             .attr("nr", line)
-                            .attr("path", tabs.focussedPage.path)
+                            .attr("path", tabs.focussedTab.path)
                             .node();
                     }
         
@@ -395,7 +395,7 @@ define(function(require, exports, module) {
                     }
                 }
 
-                tabs.focusPage(tab);
+                tabs.focusTab(tab);
             }
         }
         
