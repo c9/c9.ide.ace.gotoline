@@ -7,7 +7,7 @@
 define(function(require, exports, module) {
     main.consumes = [
         "plugin", "c9", "settings", "ui",
-        "anims", "menus", "commands", "util", "tabs"
+        "anims", "menus", "commands", "util", "tabManager"
     ];
     main.provides = ["gotoline"];
     return main;
@@ -24,7 +24,7 @@ define(function(require, exports, module) {
         var util     = imports.util;
         var menus    = imports.menus;
         var commands = imports.commands;
-        var tabs     = imports.tabs;
+        var tabs     = imports.tabManager;
         
         var skin   = require("text!./skin.xml");
         var markup = require("text!./gotoline.xml");
