@@ -6,7 +6,7 @@
  */
 define(function(require, exports, module) {
     main.consumes = [
-        "plugin", "c9", "settings", "ui",
+        "Plugin", "c9", "settings", "ui",
         "anims", "menus", "commands", "util", "tabManager"
     ];
     main.provides = ["gotoline"];
@@ -17,7 +17,7 @@ define(function(require, exports, module) {
 
     function main(options, imports, register) {
         var c9       = imports.c9;
-        var Plugin   = imports.plugin;
+        var Plugin   = imports.Plugin;
         var settings = imports.settings;
         var ui       = imports.ui;
         var anims    = imports.anims;
