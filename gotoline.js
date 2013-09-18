@@ -243,7 +243,7 @@ define(function(require, exports, module) {
     
             //Determine the position of the window
             var pos    = ace.renderer.textToScreenCoordinates(cursor.row, cursor.column);
-            var epos   = apf.getAbsolutePosition(aceHtml.parentNode);
+            var epos   = ui.getAbsolutePosition(aceHtml.parentNode);
             var maxTop = aceHtml.offsetHeight - 100;
             var top    = Math.max(0, Math.min(maxTop, pos.pageY - epos[1] - 5));
             var left   = 0;
