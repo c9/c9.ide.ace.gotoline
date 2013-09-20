@@ -309,7 +309,7 @@ define(function(require, exports, module) {
         }
     
         function execGotoLine(line, column, preview) {
-            var page    = tabs.focussedPage && tabs.focussedPage;
+            var page    = tabs.focussedPage;
             var editor  = page && page.editor;
             if (!editor || editor.type != "ace") return;
             
