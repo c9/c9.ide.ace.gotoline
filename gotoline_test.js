@@ -36,9 +36,9 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
             defaultEditor: "ace"
         },
         "plugins/c9.ide.editors/editor",
-        "plugins/c9.ide.editors/tabmanager",
-        "plugins/c9.ide.editors/pane",
+        "plugins/c9.ide.editors/tabs",
         "plugins/c9.ide.editors/tab",
+        "plugins/c9.ide.editors/page",
         "plugins/c9.ide.ace/ace",
         {
             packagePath  : "plugins/c9.ide.ace.gotoline/gotoline",
@@ -66,7 +66,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
             setup    : expect.html.mocked
         },
         {
-            consumes : ["tabManager", "ace", "settings"],
+            consumes : ["tabs", "ace", "settings"],
             provides : [],
             setup    : main
         }
@@ -77,23 +77,23 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
     });
     
     function main(options, imports, register) {
-        var tabs    = imports.tabManager;
+        var tabs    = imports.tabs;
         var ace     = imports.ace;
         
-        function getTabHtml(tab){
-            return tab.pane.aml.getPage("editor::" + tab.editorType).$ext
+        function getPageHtml(page){
+            return page.tab.aml.getPage("editor::" + page.editorType).$ext
         }
         
-        expect.html.setConstructor(function(tab){
-            if (typeof tab == "object")
-                return tab.$ext;
+        expect.html.setConstructor(function(page){
+            if (typeof page == "object")
+                return page.$ext;
         });
         
         describe('gotoline', function() {
             before(function(done){
                 apf.config.setProperty("allow-select", false);
                 apf.config.setProperty("allow-blur", false);
-                tabs.getPanes()[0].focus();
+                tabs.getTabs()[0].focus();
                 
                 bar.$ext.style.background = "rgba(220, 220, 220, 0.93)";
                 bar.$ext.style.position = "fixed";
@@ -111,15 +111,15 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
             describe("open", function(){
                 this.timeout(10000);
                 
-                it('should open a pane with just an editor', function(done) {
-                    tabs.openFile("/file.js", function(err, tab){
-                        expect(tabs.getTabs()).length(1);
+                it('should open a tab with just an editor', function(done) {
+                    tabs.openFile("/file.js", function(err, page){
+                        expect(tabs.getPages()).length(1);
                         
-//                        var sb  = tab.document.getSession().statusBar;
+//                        var sb  = page.document.getSession().statusBar;
 //                        var bar = sb.getElement("bar");
 //                        expect.html(bar, "rowcol").text("1:1");
 //                        
-//                        tab.document.editor.ace.selectAll();
+//                        page.document.editor.ace.selectAll();
 //                        setTimeout(function(){
 //                            expect.html(bar, "rowcol sel").text("2:1");
 //                            expect.html(bar, "sel").text("23 Bytes");
@@ -129,14 +129,14 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
                         done();
                     });
                 });
-                it('should handle multiple documents in the same pane', function(done) {
-                    tabs.openFile("/listing.json", function(err, tab){
-                        expect(tabs.getTabs()).length(2);
+                it('should handle multiple documents in the same tab', function(done) {
+                    tabs.openFile("/listing.json", function(err, page){
+                        expect(tabs.getPages()).length(2);
                         
-                        tab.activate();
+                        page.activate();
                         
 //                        setTimeout(function(){
-//                            var sb = tab.document.getSession().statusBar;
+//                            var sb = page.document.getSession().statusBar;
 //                            expect.html(sb.getElement("bar"), "caption").text("1:1");
                             
                             done();
@@ -144,26 +144,26 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
                     });
                 });
             });
-            describe("split(), pane.unload()", function(){
-                it('should split a pane horizontally, making the existing pane the left one', function(done) {
-                    var pane = tabs.focussedTab.pane;
-                    var righttab = pane.hsplit(true);
-                    tabs.focussedTab.attachTo(righttab);
+            describe("split(), tab.unload()", function(){
+                it('should split a tab horizontally, making the existing tab the left one', function(done) {
+                    var tab = tabs.focussedPage.tab;
+                    var righttab = tab.hsplit(true);
+                    tabs.focussedPage.attachTo(righttab);
                     done();
 //                    setTimeout(function(){
-//                        expect.html(pane.aml, "pane").text("2:1");
+//                        expect.html(tab.aml, "tab").text("2:1");
 //                        expect.html(righttab.aml, "righttab").text("1:1");
                     
                         //done();
 //                    }, 100);
                 });
-//                it('should remove the left pane from a horizontal split', function(done) {
-//                    var pane  = tabs.getPanes()[0];
-//                    var tab = tabs.getPanes()[1].getTab();
-//                    pane.unload();
-//                    expect(tabs.getPanes()).length(1);
-//                    expect(tabs.getTabs()).length(2);
-//                    tabs.focusTab(tab);
+//                it('should remove the left tab from a horizontal split', function(done) {
+//                    var tab  = tabs.getTabs()[0];
+//                    var page = tabs.getTabs()[1].getPage();
+//                    tab.unload();
+//                    expect(tabs.getTabs()).length(1);
+//                    expect(tabs.getPages()).length(2);
+//                    tabs.focusPage(page);
 //                    done();
 //                });
             });
@@ -171,10 +171,10 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
 //                this.timeout(10000);
 //                
 //                it('should change a theme', function(done) {
-//                    var editor = tabs.focussedTab.editor;
-//                    ace.on("themeInit", function setTheme(){
+//                    var editor = tabs.focussedPage.editor;
+//                    ace.on("theme.init", function setTheme(){
 //                        ace.off("theme.init", setTheme);
-//                        expect.html(getTabHtml(tabs.focussedTab).childNodes[1]).className("ace-monokai");
+//                        expect.html(getPageHtml(tabs.focussedPage).childNodes[1]).className("ace-monokai");
 //                        editor.setOption("theme", "ace/theme/textmate");
 //                        done();
 //                    });

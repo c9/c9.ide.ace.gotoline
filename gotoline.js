@@ -6,8 +6,8 @@
  */
 define(function(require, exports, module) {
     main.consumes = [
-        "Plugin", "c9", "settings", "ui",
-        "anims", "menus", "commands", "util", "tabManager"
+        "plugin", "c9", "settings", "ui",
+        "anims", "menus", "commands", "util", "tabs"
     ];
     main.provides = ["gotoline"];
     return main;
@@ -17,14 +17,14 @@ define(function(require, exports, module) {
 
     function main(options, imports, register) {
         var c9       = imports.c9;
-        var Plugin   = imports.Plugin;
+        var Plugin   = imports.plugin;
         var settings = imports.settings;
         var ui       = imports.ui;
         var anims    = imports.anims;
         var util     = imports.util;
         var menus    = imports.menus;
         var commands = imports.commands;
-        var tabs     = imports.tabManager;
+        var tabs     = imports.tabs;
         
         var skin   = require("text!./skin.xml");
         var markup = require("text!./gotoline.xml");
@@ -68,8 +68,8 @@ define(function(require, exports, module) {
                 isAvailable : function(editor){ return win && win.visible; },
                 exec        : function() {
                     hide();
-                    var tab = tabs.focussedTab;
-                    tab && tabs.focusTab(tab);
+                    var page = tabs.focussedPage;
+                    page && tabs.focusPage(page);
                     
                     if (originalLine) {
                         execGotoLine(originalLine, originalColumn, true);
@@ -138,14 +138,14 @@ define(function(require, exports, module) {
                 var path = list.selected.getAttribute("path");
                 var line = list.selected.getAttribute("nr")
                 input.setValue(line);
-                tabs.open({path: path}, function(err, tab){
+                tabs.open({path: path}, function(err, page){
                     if (!err) {
                         nohide = true;
-                        // Focus the tab
-                        tabs.focusTab(tab);
+                        // Focus the page
+                        tabs.focusPage(page);
                         
                         // Append window
-                        attachToAce(tab.editor.ace);
+                        attachToAce(page.editor.ace);
                         
                         // Focus the list
                         list.focus();
@@ -226,8 +226,8 @@ define(function(require, exports, module) {
         /***** Methods *****/
         
          function show(noanim) {
-            var tab    = tabs.focussedTab;
-            var editor  = tab && tab.editor;
+            var page    = tabs.focussedPage;
+            var editor  = page && page.editor;
             if (!editor || editor.type != "ace") return;
             
             var ace     = editor.ace;
@@ -236,14 +236,14 @@ define(function(require, exports, module) {
     
             originalLine   = cursor.row + 1;
             originalColumn = cursor.column;
-            originalPath   = tab.path;
+            originalPath   = page.path;
     
             //Set the current line
             input.setValue(input.getValue() || cursor.row + 1);
     
             //Determine the position of the window
             var pos    = ace.renderer.textToScreenCoordinates(cursor.row, cursor.column);
-            var epos   = ui.getAbsolutePosition(aceHtml.parentNode);
+            var epos   = apf.getAbsolutePosition(aceHtml.parentNode);
             var maxTop = aceHtml.offsetHeight - 100;
             var top    = Math.max(0, Math.min(maxTop, pos.pageY - epos[1] - 5));
             var left   = 0;
@@ -295,8 +295,8 @@ define(function(require, exports, module) {
             if (control && control.stop)
                 control.stop();
     
-            var tab   = tabs.focussedTab;
-            var editor = tab && tab.editor;
+            var page   = tabs.focussedPage;
+            var editor = page && page.editor;
             if (!editor || editor.type != "ace")
                 return;
     
@@ -309,8 +309,8 @@ define(function(require, exports, module) {
         }
     
         function execGotoLine(line, column, preview) {
-            var tab    = tabs.focussedTab && tabs.focussedTab;
-            var editor  = tab && tab.editor;
+            var page    = tabs.focussedPage;
+            var editor  = page && page.editor;
             if (!editor || editor.type != "ace") return;
             
             var ace     = editor.ace;
@@ -375,15 +375,15 @@ define(function(require, exports, module) {
                 //win.hide();
                 hide();
     
-                if (tabs.focussedTab.path) {
+                if (tabs.focussedPage.path) {
                     var lineNode = model.queryNode("line[@nr='" + line 
                         + "' and @path=" 
-                        + util.escapeXpathString(tabs.focussedTab.path) + "]");
+                        + util.escapeXpathString(tabs.focussedPage.path) + "]");
                     
                     if (!lineNode) {
                         lineNode = ui.n("<line />")
                             .attr("nr", line)
-                            .attr("path", tabs.focussedTab.path)
+                            .attr("path", tabs.focussedPage.path)
                             .node();
                     }
         
@@ -395,7 +395,7 @@ define(function(require, exports, module) {
                     }
                 }
 
-                tabs.focusTab(tab);
+                tabs.focusPage(page);
             }
         }
         
@@ -419,7 +419,7 @@ define(function(require, exports, module) {
         /**
          * Draws the file tree
          * @event afterfilesave Fires after a file is saved
-         * @param {Object} e
+         *   object:
          *     node     {XMLNode} description
          *     oldpath  {String} description
          **/
