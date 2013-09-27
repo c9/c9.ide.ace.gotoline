@@ -1,15 +1,9 @@
-/**
- * Gotoline Module for the Cloud9 IDE
- *
- * @copyright 2010, Ajax.org B.V.
- * @license GPLv3 <http://www.gnu.org/licenses/gpl.txt>
- */
 define(function(require, exports, module) {
     main.consumes = [
         "Plugin", "c9", "settings", "ui",
         "anims", "menus", "commands", "util", "tabManager"
     ];
-    main.provides = ["gotoline"];
+    main.provides = ["ace.gotoline"];
     return main;
     
     // @todo add commands for list navigation and bookmarking
@@ -289,18 +283,18 @@ define(function(require, exports, module) {
             }
         }
     
-        function gotoline() {
+        function gotoline(force) {
             draw();
     
             if (control && control.stop)
                 control.stop();
     
-            var tab   = tabs.focussedTab;
+            var tab    = tabs.focussedTab;
             var editor = tab && tab.editor;
             if (!editor || editor.type != "ace")
                 return;
     
-            if (!win.visible)
+            if (force != 2 && !win.visible || force == 1)
                 show();
             else
                 hide();
@@ -417,20 +411,35 @@ define(function(require, exports, module) {
         /***** Register and define API *****/
         
         /**
-         * Draws the file tree
-         * @event afterfilesave Fires after a file is saved
-         * @param {Object} e
-         *     node     {XMLNode} description
-         *     oldpath  {String} description
+         * The goto line dialog for ace editors. The goto line dialog allows
+         * users to jump to a line in a file. It has a history of all lines
+         * that were jumped to before. Users can navigate this list and press
+         * ESC to return to their original position.
+         * 
+         * @singleton
          **/
         plugin.freezePublicAPI({
             /**
+             * Jump to a line and column in the focussed tab.
+             * @param {Number}  line     The line to jump to.
+             * @param {Number}  column   The column to jump to.
+             * @param {Boolean} preview  Whether to keep the original location in memory.
              */
-            gotoline : gotoline
+            gotoline : execGotoLine,
+            
+            /**
+             * Show the goto line dialog
+             */
+            show : function(){ gotoline(1); },
+            
+            /**
+             * Hide the goto line dialog
+             */
+            hide : function(){ gotoline(2); }
         });
         
         register(null, {
-            gotoline: plugin
+            "ace.gotoline": plugin
         });
     }
 });
