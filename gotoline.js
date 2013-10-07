@@ -425,7 +425,10 @@ define(function(require, exports, module) {
              * @param {Number}  column   The column to jump to.
              * @param {Boolean} preview  Whether to keep the original location in memory.
              */
-            gotoline : execGotoLine,
+            gotoline : function(line, column, preview){
+                gotoline(1);
+                return execGotoLine(line, column, preview);
+            },
             
             /**
              * Show the goto line dialog
