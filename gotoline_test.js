@@ -53,7 +53,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
         
         // Mock plugins
         {
-            consumes : ["apf", "ui"],
+            consumes : ["apf", "ui", "Plugin"],
             provides : [
                 "commands", "menus", "layout", "watcher", 
                 "save", "preferences", "anims", "gotoline", "clipboard"
