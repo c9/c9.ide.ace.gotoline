@@ -25,6 +25,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
         },
         "plugins/c9.ide.ui/lib_apf",
         "plugins/c9.ide.ui/anims",
+        "plugins/c9.ide.ui/menus",
         {
             packagePath  : "plugins/c9.ide.ui/ui",
             staticPrefix : "plugins/c9.ide.ui"
