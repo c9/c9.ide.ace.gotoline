@@ -257,13 +257,12 @@ define(function(require, exports, module) {
                     timingFunction : "cubic-bezier(.11, .93, .84, 1)"
                 }, function() {
                     win.$ext.style.left = left + "px";
-                    input.focus();
                 });
             }
             else {
                 win.setWidth(60);
-                input.focus();
             }
+            input.focus();
         }
     
         function hide() {
