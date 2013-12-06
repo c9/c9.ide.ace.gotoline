@@ -95,9 +95,7 @@
                 bottom: -3px;
                 left:0;
             }
-        ]]></a:style>
-        <a:style condition="apf.isIE"><![CDATA[
-            .barGotoline .brGtlTop, .barGotoline .brGtlBottom {
+            .ua_ie .barGotoline .brGtlTop, .barGotoline .brGtlBottom {
                 display: none;
             }
         ]]></a:style>
@@ -165,9 +163,8 @@
                 background: -moz-linear-gradient(center bottom,rgb(235,235,235) 0%,rgb(255,255,255) 40%);
                 cursor : default;
             }
-        ]]></a:style>
-        <a:style condition="apf.isWebkit"><![CDATA[
-            .tbGotoline .sbtb_middle INPUT {
+            
+            .ua_webkit .tbGotoline .sbtb_middle INPUT {
                 position : relative;
                 top : -3px;
                 padding : 0;
