@@ -140,7 +140,7 @@
 
             .tbGotoline .sbtb_middle INPUT {
                 border           : 0;
-                height           : 13px;
+                height           : 14px;
                 font-size        : 12px;
                 color            : #0471cf;
                 font-family      : 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
