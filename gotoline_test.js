@@ -59,7 +59,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
             consumes : ["apf", "ui", "Plugin"],
             provides : [
                 "commands", "menus", "layout", "watcher", "save", "preferences",
-                "anims", "gotoline", "clipboard", "auth.bootstrap", "dialog.alert"
+                "anims", "gotoline", "clipboard", "auth.bootstrap", "info", "dialog.alert"
             ],
             setup    : expect.html.mocked
         },
