@@ -25,7 +25,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
                 JSON.stringify(["100", "/file.js", "1", "/file.txt", "300", "/file.js", "3", "/listing.json"])
             + "</gotoline></auto></settings>"
         },
-        "plugins/c9.ide.api/api.js",
+        "plugins/c9.core/api.js",
         "plugins/c9.ide.ui/lib_apf",
         "plugins/c9.ide.ui/anims",
         "plugins/c9.ide.ui/menus",
