@@ -303,7 +303,7 @@ define(function(require, exports, module) {
     
         function execGotoLine(line, column, preview) {
             var tab    = tabs.focussedTab && tabs.focussedTab;
-            var editor  = tab && tab.editor;
+            var editor = tab && tab.editor;
             if (!editor || editor.type != "ace") return;
             
             var ace     = editor.ace;
@@ -322,35 +322,17 @@ define(function(require, exports, module) {
                 if (!animate)
                     return;
     
-                var cursor     = ace.getCursorPosition();
-                var renderer   = ace.renderer;
-                var fLine      = renderer.textToScreenCoordinates(0, 0).pageY;
-                var pos        = renderer.textToScreenCoordinates(cursor.row, cursor.column);
-                var half       = aceHtml.offsetHeight / 2; 
-                var lineHeight = renderer.lineHeight;
-                var totalLines = ace.getSession().getLength();
-                var lLine      = renderer.textToScreenCoordinates(totalLines, 0).pageY + lineHeight;
-                var maxTop     = aceHtml.offsetHeight - win.getHeight() - 10;
-    
-                var top;
-                //First part of doc
-                if (pos.pageY - fLine < half) {
-                    top = Math.max(0, pos.pageY - fLine - 5);
-                }
-                //Last part of doc
-                else if (lLine - pos.pageY < half) {
-                    top = Math.min(maxTop, half + (half - (lLine - pos.pageY)));
-                }
-                //Already visible
-                else if (ace.isRowFullyVisible(cursor.row)) {
-                    //Determine the position of the window
-                    var epos = ui.getAbsolutePosition(aceHtml);
-                    top = Math.min(maxTop, pos.pageY - epos[1] - 5);
-                }
-                //General case (centered)
-                else {
-                    top = half - 1;// - lineHeight;
-                }
+                var cursor    = ace.getCursorPosition();
+                var renderer  = ace.renderer;
+                var pos       = renderer.textToScreenCoordinates(cursor.row, cursor.column);
+                var maxTop    = renderer.$size.height - win.getHeight() - 10;
+                var epos      = ui.getAbsolutePosition(aceHtml);
+                var sm        = renderer.scrollMargin;
+                var scrollTop = ace.session.getScrollTop();
+                scrollTop = Math.max(-sm.top, Math.min(scrollTop, 
+                    renderer.layerConfig.maxHeight - renderer.$size.scrollerHeight + sm.v));
+                var top = Math.min(pos.pageY - epos[1] - 2
+                    + renderer.scrollTop - scrollTop, maxTop);
     
                 if (lineControl)
                     lineControl.stop();
