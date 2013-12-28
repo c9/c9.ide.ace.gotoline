@@ -130,7 +130,7 @@ define(function(require, exports, module) {
                     return;
     
                 var path = list.selected.getAttribute("path");
-                var line = list.selected.getAttribute("nr")
+                var line = list.selected.getAttribute("nr");
                 input.setValue(line);
                 tabs.open({path: path}, function(err, tab){
                     if (!err) {
