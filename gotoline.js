@@ -76,9 +76,7 @@ define(function(require, exports, module) {
                 var lines = settings.getJson("user/gotoline") || [];
                 var xml   = "";
                 for (var i = 0, l = lines.length; i < l; i+=2) {
-                    xml += "<line nr='" + lines[i] + "' path="
-                        + util.escapeXpathString(lines[i+1]) 
-                        + " />";
+                    xml += "<line nr='" + lines[i] + "' />";
                 }
                 model.load("<lines>" + xml + "</lines>");
             });
@@ -88,8 +86,7 @@ define(function(require, exports, module) {
                     var nodes = model.data.childNodes;
                     var lines = [];
                     for (var i = 0, l = Math.min(20, nodes.length); i < l; i++) {
-                        lines.push(nodes[i].getAttribute("nr"), 
-                            nodes[i].getAttribute("path"));
+                        lines.push(nodes[i].getAttribute("nr"));
                     }
                     settings.setJson("user/gotoline", lines);
                 }
@@ -129,26 +126,14 @@ define(function(require, exports, module) {
                 if (!list.selected)
                     return;
     
-                var path = list.selected.getAttribute("path");
                 var line = list.selected.getAttribute("nr");
                 input.setValue(line);
-                tabs.open({path: path}, function(err, tab){
-                    if (!err) {
-                        nohide = true;
-                        // Focus the tab
-                        tabs.focusTab(tab);
-                        
-                        // Append window
-                        attachToAce(tab.editor.ace);
-                        
-                        // Focus the list
-                        list.focus();
-                        nohide = false;
-                        
-                        // Go to the right line
-                        execGotoLine(null, null, true);
-                    }
-                });
+                
+                // Focus the list
+                list.focus();
+                
+                // Go to the right line
+                execGotoLine(null, null, true);
             });
     
             var restricted = [38, 40, 36, 35];
@@ -350,24 +335,19 @@ define(function(require, exports, module) {
                 //win.hide();
                 hide();
     
-                if (tabs.focussedTab.path) {
-                    var lineNode = model.queryNode("line[@nr='" + line 
-                        + "' and @path=" 
-                        + util.escapeXpathString(tabs.focussedTab.path) + "]");
-                    
-                    if (!lineNode) {
-                        lineNode = ui.n("<line />")
-                            .attr("nr", line)
-                            .attr("path", tabs.focussedTab.path)
-                            .node();
-                    }
-        
-                    var pNode = model.data;
-                    if (lineNode != pNode.firstChild) {
-                        apf.xmldb.appendChild(pNode, lineNode, pNode.firstChild);
-                        changed = true;
-                        settings.save();
-                    }
+                var lineNode = model.queryNode("line[@nr='" + line + "']");
+                
+                if (!lineNode) {
+                    lineNode = ui.n("<line />")
+                        .attr("nr", line)
+                        .node();
+                }
+    
+                var pNode = model.data;
+                if (lineNode != pNode.firstChild) {
+                    apf.xmldb.appendChild(pNode, lineNode, pNode.firstChild);
+                    changed = true;
+                    settings.save();
                 }
 
                 tabs.focusTab(tab);
