@@ -20,7 +20,7 @@
                 cursor: default;
                 text-align: right;
             }
-            .ace_dark .gotolinelist{
+            .dark .gotolinelist{
                 .gradient(~"@{gotoline-list-background-dark}");
                 color: @gotoline-list-color-dark;
                 border-color: @gotoline-list-border-color-dark;
@@ -32,7 +32,7 @@
                 background-color: @gotoline-list-selected-background;
                 color: #e7e7e7;
             }
-            .ace_dark .gotolinelist>.selected{
+            .dark .gotolinelist>.selected{
                 background-color: @gotoline-list-selected-background-dark;
             }
             .gotolinelistFocus>.selected{
@@ -79,7 +79,7 @@
                 width : 20px;
                 left : -100px;
             }
-            .ace_dark .barGotoline{
+            .dark .barGotoline{
                 background-color: @gotoline-background-dark;
                 box-shadow: @gotoline-box-shadow-dark;
             }
@@ -140,7 +140,7 @@
                 border-radius: @gotoline-input-border-radius;
                 box-shadow: @gotoline-input-box-shadow;
             }
-            .ace_dark .tbGotoline .sbtb_middle{
+            .dark .tbGotoline .sbtb_middle{
                 border-color: @gotoline-input-border-color-dark;
                 border-width: @gotoline-input-border-width-dark;
                 border-radius: @gotoline-input-border-radius-dark;
