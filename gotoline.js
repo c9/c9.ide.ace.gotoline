@@ -193,15 +193,6 @@ define(function(require, exports, module) {
             emit("draw");
         }
         
-        function attachToAce(ace){
-            ace.container.parentNode.appendChild(win.$ext);
-            
-            var theme  = ace.getTheme();
-            var isDark = require(theme).isDark;
-            
-            win.setAttribute("class", isDark ? "ace_dark" : "");
-        }
-        
         /***** Methods *****/
         
          function show(noanim) {
@@ -227,7 +218,7 @@ define(function(require, exports, module) {
             var top    = Math.max(0, Math.min(maxTop, pos.pageY - epos[1] - 5));
             var left   = 0;
     
-            attachToAce(ace);
+            ace.container.parentNode.appendChild(win.$ext);
     
             win.show();
             win.$ext.style.top = top + "px";
