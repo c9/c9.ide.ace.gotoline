@@ -21,9 +21,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
         "plugins/c9.core/util",
         {
             packagePath : "plugins/c9.core/settings",
-            settings    : "<settings><user><general animateui='true' /></user><auto><gotoline>" + 
-                JSON.stringify(["100", "/file.js", "1", "/file.txt", "300", "/file.js", "3", "/listing.json"])
-            + "</gotoline></auto></settings>"
+            settings    : { user: { general: { animateui: true } } }
         },
         "plugins/c9.core/api.js",
         "plugins/c9.ide.ui/lib_apf",
