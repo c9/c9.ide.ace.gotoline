@@ -73,7 +73,7 @@ define(function(require, exports, module) {
             }, plugin);
             
             settings.on("read", function(){
-                var lines = settings.getJson("user/gotoline") || [];
+                var lines = settings.getJson("state/gotoline") || [];
                 var xml   = "";
                 for (var i = 0, l = lines.length; i < l; i+=2) {
                     xml += "<line nr='" + lines[i] + "' />";
@@ -88,7 +88,7 @@ define(function(require, exports, module) {
                     for (var i = 0, l = Math.min(20, nodes.length); i < l; i++) {
                         lines.push(nodes[i].getAttribute("nr"));
                     }
-                    settings.setJson("user/gotoline", lines);
+                    settings.setJson("state/gotoline", lines);
                 }
             });
         }
