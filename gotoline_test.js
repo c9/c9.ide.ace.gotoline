@@ -108,34 +108,38 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
                 
                 it('should open a pane with just an editor', function(done) {
                     tabs.openFile("/file.js", function(err, tab){
-                        expect(tabs.getTabs()).length(1);
-                        
-//                        var sb  = tab.document.getSession().statusBar;
-//                        var bar = sb.getElement("bar");
-//                        expect.html(bar, "rowcol").text("1:1");
-//                        
-//                        tab.document.editor.ace.selectAll();
-//                        setTimeout(function(){
-//                            expect.html(bar, "rowcol sel").text("2:1");
-//                            expect.html(bar, "sel").text("23 Bytes");
-//                            
-//                            done();
-//                        }, 100);
-                        done();
+                        setTimeout(function() {
+                            expect(tabs.getTabs()).length(1);
+
+    //                        var sb  = tab.document.getSession().statusBar;
+    //                        var bar = sb.getElement("bar");
+    //                        expect.html(bar, "rowcol").text("1:1");
+    //                        
+    //                        tab.document.editor.ace.selectAll();
+    //                        setTimeout(function(){
+    //                            expect.html(bar, "rowcol sel").text("2:1");
+    //                            expect.html(bar, "sel").text("23 Bytes");
+    //                            
+    //                            done();
+    //                        }, 100);
+                            done();
+                        }, 50);
                     });
                 });
                 it('should handle multiple documents in the same pane', function(done) {
                     tabs.openFile("/listing.json", function(err, tab){
-                        expect(tabs.getTabs()).length(2);
-                        
-                        tab.activate();
-                        
-//                        setTimeout(function(){
-//                            var sb = tab.document.getSession().statusBar;
-//                            expect.html(sb.getElement("bar"), "caption").text("1:1");
-                            
-                            done();
-//                        }, 100);
+                        setTimeout(function() {
+                            expect(tabs.getTabs()).length(2);
+
+                            tab.activate();
+
+    //                        setTimeout(function(){
+    //                            var sb = tab.document.getSession().statusBar;
+    //                            expect.html(sb.getElement("bar"), "caption").text("1:1");
+
+                                done();
+    //                        }, 100);
+                        });
                     });
                 });
             });
