@@ -10,24 +10,24 @@ define(function(require, exports, module) {
     // @todo fix pasting of line numbers
 
     function main(options, imports, register) {
-        var c9       = imports.c9;
-        var Plugin   = imports.Plugin;
+        var c9 = imports.c9;
+        var Plugin = imports.Plugin;
         var settings = imports.settings;
-        var ui       = imports.ui;
-        var anims    = imports.anims;
-        var util     = imports.util;
-        var menus    = imports.menus;
+        var ui = imports.ui;
+        var anims = imports.anims;
+        var util = imports.util;
+        var menus = imports.menus;
         var commands = imports.commands;
-        var tabs     = imports.tabManager;
+        var tabs = imports.tabManager;
         
-        var skin   = require("text!./skin.xml");
+        var skin = require("text!./skin.xml");
         var markup = require("text!./gotoline.xml");
         
         /***** Initialization *****/
         
-        var deps   = main.consumes.slice(0, main.consumes.length - 1);
+        var deps = main.consumes.slice(0, main.consumes.length - 1);
         var plugin = new Plugin("Ajax.org", deps);
-        var emit   = plugin.getEmitter();
+        var emit = plugin.getEmitter();
         
         var originalLine, originalColumn, control, lastLine, lineControl; 
         var nohide, originalPath;
@@ -41,26 +41,26 @@ define(function(require, exports, module) {
             model = new ui.model();
             
             menus.addItemByPath("Goto/Goto Line...", new apf.item({
-                caption : "Goto Line...",
-                hint    : "enter a line number and jump to it in the active document",
-                command : "gotoline"
+                caption: "Goto Line...",
+                hint: "enter a line number and jump to it in the active document",
+                command: "gotoline"
             }), 200, plugin);
     
             commands.addCommand({
-                name        : "gotoline",
-                bindKey     : { mac: "Command-L", win: "Ctrl-G" },
-                isAvailable : function(editor){
+                name: "gotoline",
+                bindKey: { mac: "Command-L", win: "Ctrl-G" },
+                isAvailable: function(editor) {
                     return editor && editor.type == "ace";
                 },
-                exec : function() {
+                exec: function() {
                     gotoline();
                 }
             }, plugin);
             
             commands.addCommand({
-                bindKey     : { mac: "ESC", win: "ESC" },
-                isAvailable : function(editor){ return win && win.visible; },
-                exec        : function() {
+                bindKey: { mac: "ESC", win: "ESC" },
+                isAvailable: function(editor){ return win && win.visible; },
+                exec: function() {
                     hide();
                     var tab = tabs.focussedTab;
                     tab && tabs.focusTab(tab);
@@ -74,7 +74,7 @@ define(function(require, exports, module) {
             
             settings.on("read", function(){
                 var lines = settings.getJson("state/gotoline") || [];
-                var xml   = "";
+                var xml = "";
                 for (var i = 0, l = lines.length; i < l; i+=2) {
                     xml += "<line nr='" + lines[i] + "' />";
                 }
@@ -100,17 +100,17 @@ define(function(require, exports, module) {
             
             // Import Skin
             ui.insertSkin({
-                name         : "gotoline",
-                data         : skin,
+                name: "gotoline",
+                data: skin,
                 "media-path" : options.staticPrefix + "/images/"
             }, plugin);
             
             // Create UI elements
             ui.insertMarkup(null, markup, plugin);
             
-            win   = plugin.getElement("window");
+            win = plugin.getElement("window");
             input = plugin.getElement("input");
-            list  = plugin.getElement("list");
+            list = plugin.getElement("list");
             
             list.setAttribute("model", model);
             
@@ -138,7 +138,7 @@ define(function(require, exports, module) {
     
             var restricted = [38, 40, 36, 35];
             list.addEventListener("keydown", function(e) {
-                if (e.keyCode == 13 && list.selected){
+                if (e.keyCode == 13 && list.selected) {
                     return false;
                 }
                 else if (e.keyCode == 38) {
@@ -155,7 +155,7 @@ define(function(require, exports, module) {
                 var NotANumber = (e.keyCode > 57 || e.keyCode == 32) 
                   && (e.keyCode < 96 || e.keyCode > 105);
                 
-                if (e.keyCode == 13){
+                if (e.keyCode == 13) {
                     execGotoLine();
                     return false;
                 }
@@ -180,12 +180,12 @@ define(function(require, exports, module) {
                 }
             });
     
-            win.addEventListener("blur", function(e){
+            win.addEventListener("blur", function(e) {
                 if (!ui.isChildOf(win, e.toElement))
                     hide();
             });
     
-            input.addEventListener("blur", function(e){
+            input.addEventListener("blur", function(e) {
                 if (!ui.isChildOf(win, e.toElement))
                     hide();
             });
@@ -196,27 +196,27 @@ define(function(require, exports, module) {
         /***** Methods *****/
         
          function show(noanim) {
-            var tab    = tabs.focussedTab;
-            var editor  = tab && tab.editor;
+            var tab = tabs.focussedTab;
+            var editor = tab && tab.editor;
             if (!editor || editor.type != "ace") return;
             
-            var ace     = editor.ace;
+            var ace = editor.ace;
             var aceHtml = ace.container;
-            var cursor  = ace.getCursorPosition();
+            var cursor = ace.getCursorPosition();
     
-            originalLine   = cursor.row + 1;
+            originalLine = cursor.row + 1;
             originalColumn = cursor.column;
-            originalPath   = tab.path;
+            originalPath = tab.path;
     
             //Set the current line
             input.setValue(input.getValue() || cursor.row + 1);
     
             //Determine the position of the window
-            var pos    = ace.renderer.textToScreenCoordinates(cursor.row, cursor.column);
-            var epos   = ui.getAbsolutePosition(aceHtml.parentNode);
+            var pos = ace.renderer.textToScreenCoordinates(cursor.row, cursor.column);
+            var epos = ui.getAbsolutePosition(aceHtml.parentNode);
             var maxTop = aceHtml.offsetHeight - 100;
-            var top    = Math.max(0, Math.min(maxTop, pos.pageY - epos[1] - 5));
-            var left   = 0;
+            var top = Math.max(0, Math.min(maxTop, pos.pageY - epos[1] - 5));
+            var left = 0;
     
             ace.container.parentNode.appendChild(win.$ext);
     
@@ -228,9 +228,9 @@ define(function(require, exports, module) {
                 win.setWidth(0);
                 
                 anims.animate(win, {
-                    width          : "60px",
-                    duration       : 0.15,
-                    timingFunction : "cubic-bezier(.11, .93, .84, 1)"
+                    width: "60px",
+                    duration: 0.15,
+                    timingFunction: "cubic-bezier(.11, .93, .84, 1)"
                 }, function() {
                     win.$ext.style.left = left + "px";
                 });
@@ -246,9 +246,9 @@ define(function(require, exports, module) {
             
             if (settings.getBool('user/general/@animateui')) {
                 anims.animate(win, {
-                    width          : "0px",
-                    duration       : 0.15,
-                    timingFunction : "cubic-bezier(.10, .10, .25, .90)"
+                    width: "0px",
+                    duration: 0.15,
+                    timingFunction: "cubic-bezier(.10, .10, .25, .90)"
                 }, function(){
                     win.hide();
                 });
@@ -264,7 +264,7 @@ define(function(require, exports, module) {
             if (control && control.stop)
                 control.stop();
     
-            var tab    = tabs.focussedTab;
+            var tab = tabs.focussedTab;
             var editor = tab && tab.editor;
             if (!editor || editor.type != "ace")
                 return;
@@ -278,11 +278,11 @@ define(function(require, exports, module) {
         }
     
         function execGotoLine(line, column, preview) {
-            var tab    = tabs.focussedTab && tabs.focussedTab;
+            var tab = tabs.focussedTab && tabs.focussedTab;
             var editor = tab && tab.editor;
             if (!editor || editor.type != "ace") return;
             
-            var ace     = editor.ace;
+            var ace = editor.ace;
             var aceHtml = ace.container;
             
             if (typeof line != "number")
@@ -298,12 +298,12 @@ define(function(require, exports, module) {
                 if (!animate)
                     return;
     
-                var cursor    = ace.getCursorPosition();
-                var renderer  = ace.renderer;
-                var pos       = renderer.textToScreenCoordinates(cursor.row, cursor.column);
-                var maxTop    = renderer.$size.height - win.getHeight() - 10;
-                var epos      = ui.getAbsolutePosition(aceHtml);
-                var sm        = renderer.scrollMargin;
+                var cursor = ace.getCursorPosition();
+                var renderer = ace.renderer;
+                var pos = renderer.textToScreenCoordinates(cursor.row, cursor.column);
+                var maxTop = renderer.$size.height - win.getHeight() - 10;
+                var epos = ui.getAbsolutePosition(aceHtml);
+                var sm = renderer.scrollMargin;
                 var scrollTop = ace.session.getScrollTop();
                 scrollTop = Math.max(-sm.top, Math.min(scrollTop, 
                     renderer.layerConfig.maxHeight - renderer.$size.scrollerHeight + sm.v));
@@ -315,9 +315,9 @@ define(function(require, exports, module) {
     
                 //Animate
                 anims.animate(win, {
-                    top            : top + "px",
-                    duration       : 0.25,
-                    timingFunction : "cubic-bezier(.11, .93, .84, 1)"
+                    top: top + "px",
+                    duration: 0.25,
+                    timingFunction: "cubic-bezier(.11, .93, .84, 1)"
                 }, function() {
                     win.$ext.style.left = "0px";
                 });
@@ -377,7 +377,7 @@ define(function(require, exports, module) {
              * @param {Number}  column   The column to jump to.
              * @param {Boolean} preview  Whether to keep the original location in memory.
              */
-            gotoline : function(line, column, preview){
+            gotoline: function(line, column, preview) {
                 gotoline(1);
                 return execGotoLine(line, column, preview);
             },
@@ -385,12 +385,12 @@ define(function(require, exports, module) {
             /**
              * Show the goto line dialog
              */
-            show : function(){ gotoline(1); },
+            show: function(){ gotoline(1); },
             
             /**
              * Hide the goto line dialog
              */
-            hide : function(){ gotoline(2); }
+            hide: function(){ gotoline(2); }
         });
         
         register(null, {
