@@ -25,8 +25,7 @@ define(function(require, exports, module) {
         
         /***** Initialization *****/
         
-        var deps = main.consumes.slice(0, main.consumes.length - 1);
-        var plugin = new Plugin("Ajax.org", deps);
+        var plugin = new Plugin("Ajax.org", main.consumes);
         var emit = plugin.getEmitter();
         
         var originalLine, originalColumn, control, lastLine, lineControl; 
