@@ -57,6 +57,8 @@ define(function(require, exports, module) {
             }, plugin);
             
             commands.addCommand({
+                name: "hideGotoLine",
+                group: "ignore",
                 bindKey: { mac: "ESC", win: "ESC" },
                 isAvailable: function(editor){ return win && win.visible; },
                 exec: function() {
