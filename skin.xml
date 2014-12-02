@@ -5,7 +5,6 @@
             .gotolinelist{
                 overflow: hidden;
                 position: relative;
-                background-color: #545454;
                 border-style: solid;
                 .gradient(~"@{gotoline-list-background}");
                 color: @gotoline-list-color;
