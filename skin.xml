@@ -74,14 +74,18 @@
             .barGotoline{
                 position : absolute;
                 background-color: @gotoline-background;
-                border-radius: 0px 5px 5px 0;
+                border-radius: @gotoline-border-radius;
                 box-shadow: @gotoline-box-shadow;
+                border: @gotoline-border;
+                border-left: 0;
                 width : 20px;
                 left : -100px;
             }
             .dark .barGotoline{
                 background-color: @gotoline-background-dark;
                 box-shadow: @gotoline-box-shadow-dark;
+                border: @gotoline-border-dark;
+                border-left: 0;
             }
             .brGtlContent {
             }

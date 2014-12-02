@@ -288,11 +288,13 @@ define(function(require, exports, module) {
             
             if (typeof line != "number")
                 line = parseInt(input.getValue(), 10) || 0;
-                
-            if (!lastLine || lastLine != line || !ace.isRowFullyVisible(line)) {
+            
+            // I don't know why this if was here. It caused a bug where if the
+            // line target was already in view, it wouldn't jump to it.
+            // if (!lastLine || lastLine != line || !ace.isRowFullyVisible(line)) {
                 ace.gotoLine(line, column);
                 lastLine = line;
-            }
+            // }
     
             if (typeof preview != "undefined") {
                 var animate = settings.getBool("user/ace/@animatedScroll");
