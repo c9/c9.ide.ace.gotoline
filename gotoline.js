@@ -80,7 +80,7 @@ define(function(require, exports, module) {
                     xml += "<line nr='" + lines[i] + "' />";
                 }
                 model.load("<lines>" + xml + "</lines>");
-            });
+            }, plugin);
             
             settings.on("write", function(){
                 if (changed) {
@@ -91,7 +91,7 @@ define(function(require, exports, module) {
                     }
                     settings.setJson("state/gotoline", lines);
                 }
-            });
+            }, plugin);
         }
         
         var drawn = false;
