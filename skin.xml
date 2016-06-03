@@ -104,9 +104,6 @@
                 bottom: -3px;
                 left:0;
             }
-            .ua_ie .barGotoline .brGtlTop, .barGotoline .brGtlBottom {
-                display: none;
-            }
         ]]></a:style>
         <a:presentation>
             <a:main container=".">
@@ -173,13 +170,6 @@
             .tbGotolineDisabled .sbtb_middle{
                 background: linear-gradient(center bottom,rgb(235,235,235) 0%,rgb(255,255,255) 40%);
                 cursor : default;
-            }
-            
-            .ua_webkit .tbGotoline .sbtb_middle INPUT {
-                position : relative;
-                top : -3px;
-                padding : 0;
-                height : auto;
             }
         ]]></a:style>
 
