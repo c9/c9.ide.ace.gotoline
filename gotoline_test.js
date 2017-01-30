@@ -21,7 +21,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
         "plugins/c9.core/util",
         {
             packagePath: "plugins/c9.core/settings",
-            settings: { user: { general: { animateui: true } } }
+            settings: { user: { general: { animateui: true }}}
         },
         "plugins/c9.core/api.js",
         "plugins/c9.ide.ui/lib_apf",
@@ -67,7 +67,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
         var ace = imports.ace;
         
         function getTabHtml(tab) {
-            return tab.pane.aml.getPage("editor::" + tab.editorType).$ext
+            return tab.pane.aml.getPage("editor::" + tab.editorType).$ext;
         }
         
         expect.html.setConstructor(function(tab) {
@@ -96,7 +96,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
                 });
             });
             
-            describe("open", function(){
+            describe("open", function() {
                 this.timeout(10000);
                 
                 it('should open a pane with just an editor', function(done) {
@@ -136,7 +136,7 @@ require(["lib/architect/architect", "lib/chai/chai"], function (architect, chai)
                     });
                 });
             });
-            describe("split(), pane.unload()", function(){
+            describe("split(), pane.unload()", function() {
                 it('should split a pane horizontally, making the existing pane the left one', function(done) {
                     var pane = tabs.focussedTab.pane;
                     var righttab = pane.hsplit(true);

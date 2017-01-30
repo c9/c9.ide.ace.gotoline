@@ -33,7 +33,7 @@ define(function(require, exports, module) {
         var win, input, list, model; // ui elements
         
         var loaded = false, changed = false;
-        function load(){
+        function load() {
             if (loaded) return false;
             loaded = true;
             
@@ -60,7 +60,7 @@ define(function(require, exports, module) {
                 name: "hideGotoLine",
                 group: "ignore",
                 bindKey: { mac: "ESC", win: "ESC" },
-                isAvailable: function(editor){ return win && win.visible; },
+                isAvailable: function(editor) { return win && win.visible; },
                 exec: function() {
                     hide();
                     var tab = tabs.focussedTab;
@@ -73,16 +73,16 @@ define(function(require, exports, module) {
                 }
             }, plugin);
             
-            settings.on("read", function(){
+            settings.on("read", function() {
                 var lines = settings.getJson("state/gotoline") || [];
                 var xml = "";
-                for (var i = 0, l = lines.length; i < l; i+=2) {
+                for (var i = 0, l = lines.length; i < l; i += 2) {
                     xml += "<line nr='" + lines[i] + "' />";
                 }
                 model.load("<lines>" + xml + "</lines>");
             }, plugin);
             
-            settings.on("write", function(){
+            settings.on("write", function() {
                 if (changed) {
                     var nodes = model.data.childNodes;
                     var lines = [];
@@ -95,7 +95,7 @@ define(function(require, exports, module) {
         }
         
         var drawn = false;
-        function draw(){
+        function draw() {
             if (drawn) return;
             drawn = true;
             
@@ -103,7 +103,7 @@ define(function(require, exports, module) {
             ui.insertSkin({
                 name: "gotoline",
                 data: skin,
-                "media-path" : options.staticPrefix + "/images/"
+                "media-path": options.staticPrefix + "/images/"
             }, plugin);
             
             // Create UI elements
@@ -175,7 +175,7 @@ define(function(require, exports, module) {
                 // Numbers & Cmd-V / Cmd-C
                 if (!NotANumber || (e.metaKey || e.ctrlKey) 
                   && (e.keyCode == 86 || e.keyCode == 88)) {
-                    setTimeout(function(){
+                    setTimeout(function() {
                         execGotoLine(null, null, true);
                     }, 10);
                 }
@@ -250,7 +250,7 @@ define(function(require, exports, module) {
                     width: "0px",
                     duration: 0.15,
                     timingFunction: "cubic-bezier(.10, .10, .25, .90)"
-                }, function(){
+                }, function() {
                     win.hide();
                 });
             }
@@ -350,16 +350,16 @@ define(function(require, exports, module) {
         
         /***** Lifecycle *****/
         
-        plugin.on("load", function(){
+        plugin.on("load", function() {
             load();
         });
-        plugin.on("enable", function(){
+        plugin.on("enable", function() {
             
         });
-        plugin.on("disable", function(){
+        plugin.on("disable", function() {
             
         });
-        plugin.on("unload", function(){
+        plugin.on("unload", function() {
             loaded = false;
         });
         
@@ -388,12 +388,12 @@ define(function(require, exports, module) {
             /**
              * Show the goto line dialog
              */
-            show: function(){ gotoline(1); },
+            show: function() { gotoline(1); },
             
             /**
              * Hide the goto line dialog
              */
-            hide: function(){ gotoline(2); }
+            hide: function() { gotoline(2); }
         });
         
         register(null, {
